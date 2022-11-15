@@ -110,6 +110,23 @@ class App extends Component {
   }
 
   render() {
+    const isPaused = this.state.isPaused;
+    let button;
+    if (isPaused) {
+      button = <button onClick={() => 
+          {
+            this.setState(() => ({ isPaused: false, clickCount: this.state.clickCount + 1 }));
+            this.startTimer();
+          }
+          }>Start</button>
+    } else {
+      button = <button onClick={() => 
+        {
+          this.setState(() => ({ isPaused: true }));
+          this.stopTimer();
+        }
+        }>Stop</button>
+    };
     return (
       <div className="App">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"></link>
@@ -129,19 +146,8 @@ class App extends Component {
             </div>
           </div>
           <p></p>
-          <button onClick={() => 
-            {
-              this.setState(() => ({ isPaused: false }));
-              this.startTimer();
-              this.setState(() => ({ clickCount: this.state.clickCount + 1 }));
-            }
-            }>Start</button>
-             <button onClick={() => 
-              {
-                this.setState(() => ({ isPaused: true }));
-                this.stopTimer();
-              }
-              }>Stop</button>
+          {button}
+
         </div>
       </div>
     );
