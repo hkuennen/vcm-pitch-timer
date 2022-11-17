@@ -10,6 +10,7 @@ class App extends Component {
     this.initializeClock = this.initializeClock.bind(this);
     this.stopClock = this.stopClock.bind(this);
     this.setDeadline = this.setDeadline.bind(this);
+    this.addMinutes = this.addMinutes.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.state = {
@@ -18,6 +19,7 @@ class App extends Component {
       minutes: "05",
       seconds: "00",
       total: 300000,
+      minutesInt: 5,
       timePermitted: "5 minutes",
       clickCount: 0
     };
@@ -77,15 +79,16 @@ class App extends Component {
     let timeinterval = setInterval(updateClock, 1000);
   }
 
+  addMinutes(numOfMinutes, date = new Date()) {
+    date.setMinutes(date.getMinutes() + numOfMinutes);
+    return date;
+  }
+
   startTimer() {
     if (this.state.clickCount < 1) {
-      const addMinutes = (numOfMinutes, date = new Date()) => {
-        date.setMinutes(date.getMinutes() + numOfMinutes);
-        return date;
-      }
       this.setState(() => {
         return {
-          deadline: addMinutes(5)
+          deadline: this.addMinutes(this.state.minutesInt)
         }
       })
     };
@@ -110,6 +113,7 @@ class App extends Component {
   }
 
   render() {
+
     const isPaused = this.state.isPaused;
     let button;
     if (isPaused) {
@@ -125,7 +129,7 @@ class App extends Component {
           this.setState(() => ({ isPaused: true }));
           this.stopTimer();
         }
-        }>Stop</button>
+        }>Pause</button>
     };
     return (
       <div className="App">
@@ -147,7 +151,14 @@ class App extends Component {
           </div>
           <p></p>
           {button}
-
+          <br />
+          <br />
+          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "05", seconds: "00", minutesInt: 5, timePermitted: "5 minutes", clickCount: 0 }))}
+          >5 minutes</button>
+          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "03", seconds: "00", minutesInt: 3, timePermitted: "3 minutes", clickCount: 0 }))}
+          >3 minutes</button>
+          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "01", seconds: "00", minutesInt: 1, timePermitted: "1 minute", clickCount: 0 }))}
+          >1 minute</button>
         </div>
       </div>
     );
