@@ -1,4 +1,6 @@
 import logo from './logo.svg';
+import beepSound from './sounds/beep.mp3';
+import gongSound from './sounds/gong.mp3';
 import './App.css';
 import React, { Component } from 'react';
 
@@ -7,6 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.getTimeRemaining = this.getTimeRemaining.bind(this);
+    this.loadSounds = this.loadSounds.bind(this);
     this.initializeClock = this.initializeClock.bind(this);
     this.stopClock = this.stopClock.bind(this);
     this.setDeadline = this.setDeadline.bind(this);
@@ -25,6 +28,14 @@ class App extends Component {
     };
   }
 
+  beep = new Audio(beepSound);
+  gong = new Audio(gongSound);
+
+  loadSounds() {
+      this.beep.load();
+      this.gong.load();
+    }
+
   getTimeRemaining(endtime) {
     let t = Date.parse(endtime) - Date.parse(new Date());
     let seconds = Math.floor((t / 1000) % 60);
@@ -35,12 +46,12 @@ class App extends Component {
       'seconds': seconds
     };
   }
-  
+
   initializeClock() {
     const updateClock = () => {
       if (!this.state.isPaused) {
         let t = this.getTimeRemaining(this.state.deadline);
-      
+        
         this.setState(() => {
           return {
             minutes: ('0' + t.minutes).slice(-2),
@@ -48,8 +59,13 @@ class App extends Component {
             total: t.total
           };
         });
-      
-        if (this.state.total <= 0) {
+        
+        if (this.state.total < 16000) {
+          this.beep.play();
+          this.beep.currentTime = 0;
+        }
+          
+        if (this.state.total < 2000) {
           clearInterval(timeinterval);
           this.setState(() => {
             return {
@@ -57,16 +73,19 @@ class App extends Component {
               seconds: ('00')
             };
           });
-          
+          this.gong.play();
+          this.gong.currentTime = 0;
         }
       } else if (this.state.isPaused) {
         clearInterval(timeinterval);
+        this.beep.pause();
+        this.beep.currentTime = 0;
       }
     }
     updateClock();
     let timeinterval = setInterval(updateClock, 1000);
   }
-
+    
   stopClock() {
     const updateClock = () => {  
       if (this.state.isPaused) {
@@ -78,14 +97,15 @@ class App extends Component {
     updateClock();
     let timeinterval = setInterval(updateClock, 1000);
   }
-
+    
   addMinutes(numOfMinutes, date = new Date()) {
     date.setMinutes(date.getMinutes() + numOfMinutes);
     return date;
   }
-
+    
   startTimer() {
     if (this.state.clickCount < 1) {
+      this.loadSounds();
       this.setState(() => {
         return {
           deadline: this.addMinutes(this.state.minutesInt)
@@ -93,16 +113,16 @@ class App extends Component {
       })
     };
     setTimeout(() => {
-        return this.initializeClock();
-    }, 500);
+      return this.initializeClock();
+    }, 200);
   }
-
+  
   stopTimer() {
     setTimeout(() => {
-        return this.stopClock();
+      return this.stopClock();
     }, 10);
   }
-
+  
   setDeadline(millisecs) {
     this.setState((prevState) => {
       let new_deadline = new Date(Date.parse(prevState.deadline) + millisecs)
@@ -111,9 +131,8 @@ class App extends Component {
       };
     });
   }
-
+  
   render() {
-
     const isPaused = this.state.isPaused;
     let button;
     if (isPaused) {
@@ -153,11 +172,11 @@ class App extends Component {
           {button}
           <br />
           <br />
-          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "05", seconds: "00", minutesInt: 5, timePermitted: "5 minutes", clickCount: 0 }))}
+          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "05", seconds: "00", total: 300000, minutesInt: 5, timePermitted: "5 minutes", clickCount: 0 }))}
           >5 minutes</button>
-          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "03", seconds: "00", minutesInt: 3, timePermitted: "3 minutes", clickCount: 0 }))}
+          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "03", seconds: "00", total: 180000, minutesInt: 3, timePermitted: "3 minutes", clickCount: 0 }))}
           >3 minutes</button>
-          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "01", seconds: "00", minutesInt: 1, timePermitted: "1 minute", clickCount: 0 }))}
+          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "01", seconds: "00", total: 60000, minutesInt: 1, timePermitted: "1 minute", clickCount: 0 }))}
           >1 minute</button>
         </div>
       </div>
