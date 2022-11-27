@@ -60,7 +60,7 @@ class App extends Component {
           };
         });
         
-        if (this.state.total < 16000) {
+        if (this.state.total < 12000) {
           this.beep.play();
           this.beep.currentTime = 0;
         }
@@ -136,19 +136,21 @@ class App extends Component {
     const isPaused = this.state.isPaused;
     let button;
     if (isPaused) {
-      button = <button onClick={() => 
+      button = <a href="/" className="start-stop bold" onClick={(e) => 
           {
+            e.preventDefault();
             this.setState(() => ({ isPaused: false, clickCount: this.state.clickCount + 1 }));
             this.startTimer();
           }
-          }>Start</button>
+          }>Start</a>
     } else {
-      button = <button onClick={() => 
+      button = <a href="/" className="start-stop" onClick={(e) => 
         {
+          e.preventDefault();
           this.setState(() => ({ isPaused: true }));
           this.stopTimer();
         }
-        }>Pause</button>
+        }>Pause</a>
     };
     return (
       <div className="App">
@@ -168,16 +170,28 @@ class App extends Component {
               <div className="smalltext">sec</div>
             </div>
           </div>
-          <p></p>
-          {button}
-          <br />
-          <br />
-          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "05", seconds: "00", total: 300000, minutesInt: 5, timePermitted: "5 minutes", clickCount: 0 }))}
-          >5 minutes</button>
-          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "03", seconds: "00", total: 180000, minutesInt: 3, timePermitted: "3 minutes", clickCount: 0 }))}
-          >3 minutes</button>
-          <button onClick={() => this.setState(() => ({ isPaused: true, minutes: "01", seconds: "00", total: 60000, minutesInt: 1, timePermitted: "1 minute", clickCount: 0 }))}
-          >1 minute</button>
+          <div>
+            <div className="start-stop-div">
+              {button}
+            </div>
+            <div className="minutes-btn-div bold">
+              <a href="/" onClick={(e) => {
+                e.preventDefault();
+                this.setState(() => ({ isPaused: true, minutes: "05", seconds: "00", total: 300000, minutesInt: 5, timePermitted: "5 minutes", clickCount: 0 }))}
+              }
+              >5 minutes</a>
+              <a href="/" onClick={(e) => {
+                e.preventDefault();
+                this.setState(() => ({ isPaused: true, minutes: "03", seconds: "00", total: 180000, minutesInt: 3, timePermitted: "3 minutes", clickCount: 0 }))}
+              }
+              >3 minutes</a>
+              <a href="/" onClick={(e) => {
+                e.preventDefault();
+                this.setState(() => ({ isPaused: true, minutes: "01", seconds: "00", total: 60000, minutesInt: 1, timePermitted: "1 minute", clickCount: 0 }))}
+              }
+              >1 minute</a>
+            </div>
+          </div>
         </div>
       </div>
     );
