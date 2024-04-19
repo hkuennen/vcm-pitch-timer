@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import beepSound from './sounds/beep.mp3';
 import gongSound from './sounds/gong.mp3';
-import './App.css';
 import React, { Component } from 'react';
+import './App.scss';
 
 class App extends Component {
 
@@ -24,7 +24,8 @@ class App extends Component {
       total: 300000,
       minutesInt: 5,
       timePermitted: "5 minutes",
-      clickCount: 0
+      clickCount: 0,
+      finished: false
     };
   }
 
@@ -45,6 +46,26 @@ class App extends Component {
       'minutes': minutes,
       'seconds': seconds
     };
+  }
+    
+  startTimer() {
+    if (this.state.clickCount < 1) {
+      this.loadSounds();
+      this.setState(() => {
+        return {
+          deadline: this.addMinutes(this.state.minutesInt)
+        }
+      })
+    };
+    setTimeout(() => {
+      return this.initializeClock();
+    }, 200);
+  }
+
+  stopTimer() {
+    setTimeout(() => {
+      return this.stopClock();
+    }, 10);
   }
 
   initializeClock() {
@@ -73,6 +94,7 @@ class App extends Component {
               seconds: ('00')
             };
           });
+          this.setState({ finished: true });
           this.gong.play();
           this.gong.currentTime = 0;
         }
@@ -102,26 +124,6 @@ class App extends Component {
     date.setMinutes(date.getMinutes() + numOfMinutes);
     return date;
   }
-    
-  startTimer() {
-    if (this.state.clickCount < 1) {
-      this.loadSounds();
-      this.setState(() => {
-        return {
-          deadline: this.addMinutes(this.state.minutesInt)
-        }
-      })
-    };
-    setTimeout(() => {
-      return this.initializeClock();
-    }, 200);
-  }
-  
-  stopTimer() {
-    setTimeout(() => {
-      return this.stopClock();
-    }, 10);
-  }
   
   setDeadline(millisecs) {
     this.setState((prevState) => {
@@ -134,30 +136,31 @@ class App extends Component {
   
   render() {
     const isPaused = this.state.isPaused;
+    const isFinished = this.state.finished;
     let button;
-    if (isPaused) {
-      button = <a href="/" className="start-stop bold" onClick={(e) => 
+    if (isPaused || isFinished) {
+      button = <button className="start-stop bold" disabled={isFinished} onClick={(e) => 
           {
             e.preventDefault();
             this.setState(() => ({ isPaused: false, clickCount: this.state.clickCount + 1 }));
             this.startTimer();
           }
-          }>Start</a>
+          }>Start</button>
     } else {
-      button = <a href="/" className="start-stop" onClick={(e) => 
+      button = <button className="start-stop" disabled={isFinished} onClick={(e) => 
         {
           e.preventDefault();
           this.setState(() => ({ isPaused: true }));
           this.stopTimer();
         }
-        }>Pause</a>
+        }>Pause</button>
     };
     return (
       <div className="App">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"></link>
         <h1 className="bold">Pitch Please!</h1>
         <div className="border">
-          <h1>{this.state.timePermitted}</h1>
+          <h2>{this.state.timePermitted}</h2>
           <img src={logo} className="App-logo" alt="logo" />
           <p></p>
           <div id="clockdiv">
@@ -175,21 +178,30 @@ class App extends Component {
               {button}
             </div>
             <div className="minutes-btn-div bold">
-              <a href="/" onClick={(e) => {
+              <button onClick={(e) => {
                 e.preventDefault();
-                this.setState(() => ({ isPaused: true, minutes: "05", seconds: "00", total: 300000, minutesInt: 5, timePermitted: "5 minutes", clickCount: 0 }))}
-              }
-              >5 minutes</a>
-              <a href="/" onClick={(e) => {
+                this.setState(() => ({
+                  isPaused: true, minutes: "05", seconds: "00", total: 300000, minutesInt: 5,
+                  timePermitted: "5 minutes", clickCount: 0, finished: false })
+                );
+              }}
+              >5 minutes</button>
+              <button onClick={(e) => {
                 e.preventDefault();
-                this.setState(() => ({ isPaused: true, minutes: "03", seconds: "00", total: 180000, minutesInt: 3, timePermitted: "3 minutes", clickCount: 0 }))}
-              }
-              >3 minutes</a>
-              <a href="/" onClick={(e) => {
+                this.setState(() => ({
+                  isPaused: true, minutes: "03", seconds: "00", total: 180000, minutesInt: 3,
+                  timePermitted: "3 minutes", clickCount: 0, finished: false })
+                );
+              }}
+              >3 minutes</button>
+              <button onClick={(e) => {
                 e.preventDefault();
-                this.setState(() => ({ isPaused: true, minutes: "01", seconds: "00", total: 60000, minutesInt: 1, timePermitted: "1 minute", clickCount: 0 }))}
-              }
-              >1 minute</a>
+                this.setState(() => ({
+                  isPaused: true, minutes: "01", seconds: "00", total: 60000, minutesInt: 1,
+                  timePermitted: "1 minute", clickCount: 0, finished: false })
+                );
+              }}
+              >1 minute</button>
             </div>
           </div>
         </div>

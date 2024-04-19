@@ -1,48 +1,68 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
+$bg: rgba(243, 147, 33, 0.5);
+$orange:rgba(243, 147, 34, 1);
+$dark-orange: rgba(239, 115, 0, 0.8);
+$ochre: rgba(243, 147, 34, 0.4);
+$shadow: rgba(0,0,0,.2);
+$white: #FFF;
+$greyed-out: rgba(157, 88, 20, 0.5);
+
 body {
   margin-top: 20px;
   margin-bottom: 20px;
   text-align: center;
-  background: rgba(243, 147, 33, 0.5);
+  background: $bg;
   font-family: "Roboto", sans-serif;
   font-weight: 100;
 }
 
-h1 {
-  color: rgba(243, 147, 34, 1);
+h1, h2 {
+  color: $orange;
   font-weight: 100;
   font-size: 56px;
   margin: 0px 0px 35px;
+}
+
+h2 {
+  font-size: 54px;
 }
 
 p {
   margin: 0px 0px 35px;
 }
 
-a {
+button {
   text-decoration: none;
   padding: 4px 10px;
   border-radius: 4px;
-  border: 1px solid rgba(239, 115, 0, 0.8);
-  background-color: rgba(243, 147, 34, 0.4);
-  box-shadow: 0px 2px 5px rgba(0,0,0,.2);
-  color: #FFFFFF;
+  border: 1px solid $dark-orange;
+  background-color: $ochre;
+  box-shadow: 0px 2px 5px $shadow;
+  color: $white;
   margin: 0 10px;
-}
 
-a:hover {
-  background-color: rgba(239, 115, 0, 0.8);;
+  &:hover {
+    background-color: $dark-orange;
+  }
+
+  &:disabled {
+    border-color: darken($ochre, 10%);
+    background-color: darken($ochre, 10%);
+    color: lighten($greyed-out, 10%);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
 }
 
 .start-stop {
   padding: 6px 25px;
-  border: 1.5px solid rgba(239, 115, 0, 0.8);
+  border-width: 1.5px
 }
 
 #clockdiv {
   font-family: sans-serif;
-  color: #fff;
+  color: $white;
   display: inline-block;
   font-weight: 100;
   text-align: center;
@@ -50,17 +70,17 @@ a:hover {
 }
 
 #clockdiv > div {
+  display: inline-block;
   padding: 20px;
   border-radius: 4px;
-  background: rgba(243, 147, 34, 0.4);
-  display: inline-block;
+  background: $ochre;
 }
 
 #clockdiv div > span {
+  display: inline-block;
   padding: 15px;
   border-radius: 3px;
-  background: rgba(239, 115, 0, 0.8);
-  display: inline-block;
+  background: $dark-orange;
 }
 
 .start-stop-div {
@@ -83,9 +103,9 @@ a:hover {
 }
 
 .border {
-  padding: 60px;
   display: inline-block;
+  padding: 60px;
   text-align: center;
-  border: solid 9px #f39321;
+  border: solid 9px $orange;
   border-radius: 20px;
 }
