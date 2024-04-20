@@ -1,1 +1,1 @@
-https://vcm-pitch-timer.herokuapp.com/
+# vcm-pitch-timer
