@@ -22,13 +22,13 @@ body {
 
 h1, h2 {
   color: $orange;
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 100;
   margin: 0px 0px 35px;
 }
 
 h2 {
-  font-size: 48px;
+  font-size: 46px;
 }
 
 p {
@@ -122,11 +122,11 @@ button {
 // Tablet and larger screens
 @media (min-width: $tablet) {
   h1, h2 {
-    font-size: 60px;
+    font-size: 52px;
   }
 
   #clockdiv {
-    font-size: 56px;
+    font-size: 50px;
 
     > div {
       padding: 25px;
@@ -168,11 +168,11 @@ button {
 // Desktop and larger screens
 @media (min-width: $desktop) {
   h1, h2 {
-    font-size: 72px;
+    font-size: 56px;
   }
 
   #clockdiv {
-    font-size: 64px;
+    font-size: 54px;
 
     > div {
       padding: 30px;
