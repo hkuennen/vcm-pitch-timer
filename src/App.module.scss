@@ -1,41 +1,32 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
-$bg: rgba(243, 147, 33, 0.5);
-$orange:rgba(243, 147, 34, 1);
+$orange: rgba(243, 147, 34, 1);
 $dark-orange: rgba(239, 115, 0, 0.8);
 $ochre: rgba(243, 147, 34, 0.4);
-$shadow: rgba(0,0,0,.2);
-$white: #FFF;
+$shadow: rgba(0, 0, 0, 0.2);
+$white: #fff;
 $greyed-out: rgba(157, 88, 20, 0.5);
 
 $tablet: 992px;
 $desktop: 1200px;
 
-body {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  background: $bg;
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-}
-
-h1, h2 {
+.h1,
+.h2 {
   color: $orange;
   font-size: 48px;
   font-weight: 100;
   margin: 0px 0px 35px;
 }
 
-h2 {
+.h2 {
   font-size: 46px;
 }
 
-p {
+.p {
   margin: 0px 0px 35px;
 }
 
-button {
+.button {
   text-decoration: none;
   padding: 4px 10px;
   border-radius: 4px;
@@ -50,20 +41,20 @@ button {
   }
 
   &:disabled {
-    border-color: darken($ochre, 10%);
-    background-color: darken($ochre, 10%);
-    color: lighten($greyed-out, 10%);
+    border-color: adjust-color($ochre, $lightness: -10%);
+    background-color: adjust-color($ochre, $lightness: -10%);
+    color: adjust-color($ochre, $lightness: 10%);
     box-shadow: none;
     cursor: not-allowed;
   }
 }
 
-.start-stop {
+.start_stop {
   padding: 6px 25px;
-  border-width: 1.5px
+  border-width: 1.5px;
 }
 
-#clockdiv {
+#clock_container {
   display: inline-block;
   font-family: sans-serif;
   color: $white;
@@ -72,26 +63,26 @@ button {
   font-size: 40px;
 }
 
-#clockdiv > div {
+#clock_container > div {
   display: inline-block;
   padding: 15px;
   border-radius: 4px;
   background: $ochre;
 }
 
-#clockdiv div > span {
+#clock_container div > span {
   display: inline-block;
   padding: 15px;
   border-radius: 3px;
   background: $dark-orange;
 }
 
-.start-stop-div {
+.start_stop_container {
   margin-top: 55px;
   margin-bottom: 25px;
 }
 
-.minutes-btn-div {
+.minutes_btn_container {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -99,7 +90,7 @@ button {
 }
 
 .bold {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .smalltext {
@@ -121,11 +112,12 @@ button {
 
 // Tablet and larger screens
 @media (min-width: $tablet) {
-  h1, h2 {
+  .h1,
+  .h2 {
     font-size: 52px;
   }
 
-  #clockdiv {
+  #clock_container {
     font-size: 50px;
 
     > div {
@@ -137,22 +129,22 @@ button {
     }
   }
 
-  .start-stop-div {
+  .start_stop_container {
     margin-top: 40px;
     margin-bottom: 20px;
 
-    button {
+    .button {
       width: 120px;
       height: 37px;
       font-size: 16px;
     }
   }
 
-  .minutes-btn-div {
+  .minutes_btn_container {
     display: inline-block;
     font-size: 14px;
 
-    button {
+    .button {
       padding: 8px 13px;
       width: 100px;
       font-size: 16px;
@@ -167,11 +159,12 @@ button {
 
 // Desktop and larger screens
 @media (min-width: $desktop) {
-  h1, h2 {
+  .h1,
+  .h2 {
     font-size: 56px;
   }
 
-  #clockdiv {
+  #clock_container {
     font-size: 54px;
 
     > div {
@@ -183,8 +176,8 @@ button {
     }
   }
 
-  .start-stop-div {
-    button {
+  .start_stop_container {
+    .button {
       padding: 10px 20px;
       width: 150px;
       height: 43.5px;
@@ -192,10 +185,10 @@ button {
     }
   }
 
-  .minutes-btn-div {
+  .minutes_btn_container {
     font-size: 16px;
 
-    button {
+    .button {
       padding: 10px 20px;
       width: 125px;
       font-size: 18px;
