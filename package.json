@@ -1,16 +1,19 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
-  "description": "",
+  "name": "pitch-timer",
+  "version": "1.0.0",
+  "main": "index.js",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
-  "license": "MIT",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.26.5",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-solid": "^0.14.5",
     "vite": "^6.0.0",
     "vite-plugin-solid": "^2.11.0"
   },
@@ -19,7 +22,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "solid-js": "^1.9.3",
-    "sass": "^1.75.0"
+    "sass": "^1.75.0",
+    "solid-js": "^1.9.3"
   }
 }

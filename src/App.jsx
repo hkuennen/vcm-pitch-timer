@@ -1,8 +1,8 @@
-import { createSignal, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup, Show } from "solid-js";
+import styles from "./App.module.scss";
 import beepSound from "./assets/beep.mp3";
 import gongSound from "./assets/gong.mp3";
 import logo from "./assets/logo.svg";
-import styles from "./App.module.scss";
 
 function App() {
   const [deadline, setDeadline] = createSignal(new Date());
@@ -11,8 +11,7 @@ function App() {
   const [seconds, setSeconds] = createSignal("00");
   const [total, setTotal] = createSignal(300000);
   const [minutesInt, setMinutesInt] = createSignal(5);
-  const [timePermitted, setTimePermitted] = createSignal("5 minutes");
-  const [clickCount, setClickCount] = createSignal(0);
+  const [isPristine, setIsPristine] = createSignal(true);
   const [finished, setFinished] = createSignal(false);
 
   const beep = new Audio(beepSound);
@@ -23,27 +22,27 @@ function App() {
     gong.load();
   };
 
-  const getTimeRemaining = (endtime) => {
-    let t = Date.parse(endtime) - Date.parse(new Date());
-    let seconds = Math.floor((t / 1000) % 60);
-    let minutes = Math.floor((t / 1000 / 60) % 60);
-    return {
-      total: t,
-      minutes: minutes,
-      seconds: seconds
-    };
-  };
-
   const startTimer = () => {
-    if (clickCount() < 1) {
+    if (isPristine()) {
       loadSounds();
       setDeadline(addMinutes(minutesInt()));
     }
     setTimeout(() => initializeClock(), 200);
   };
 
-  const stopTimer = () => {
-    setTimeout(() => stopClock(), 10);
+  const pauseTimer = () => {
+    setTimeout(() => {
+      const updateClock = () => {
+        if (isPaused()) {
+          setDeadline(new Date(Date.parse(deadline()) + 1000));
+        } else {
+          clearInterval(timeinterval);
+        }
+      };
+      updateClock();
+      let timeinterval = setInterval(updateClock, 1000);
+      onCleanup(() => clearInterval(timeinterval));
+    }, 10);
   };
 
   const initializeClock = () => {
@@ -79,64 +78,55 @@ function App() {
     onCleanup(() => clearInterval(timeinterval));
   };
 
-  const stopClock = () => {
-    const updateClock = () => {
-      if (isPaused()) {
-        setDeadline(new Date(Date.parse(deadline()) + 1000));
-      } else {
-        clearInterval(timeinterval);
-      }
-    };
-    updateClock();
-    let timeinterval = setInterval(updateClock, 1000);
-    onCleanup(() => clearInterval(timeinterval));
-  };
-
   const addMinutes = (numOfMinutes, date = new Date()) => {
     date.setMinutes(date.getMinutes() + numOfMinutes);
     return date;
   };
 
-  let button;
-  if (isPaused() || finished()) {
-    button = (
-      <button
-        class={`${styles.button} ${styles.start_stop} ${styles.bold}`}
-        disabled={finished()}
-        onClick={(e) => {
-          e.preventDefault();
-          setIsPaused(false);
-          setClickCount(clickCount() + 1);
-          startTimer();
-        }}
-      >
-        Start
-      </button>
-    );
-  } else {
-    button = (
-      <button
-        class={`${styles.button} ${styles.start_stop}`}
-        disabled={finished()}
-        onClick={(e) => {
-          e.preventDefault();
-          setIsPaused(true);
-          stopTimer();
-        }}
-      >
-        Pause
-      </button>
-    );
-  }
+  const getTimeRemaining = (endtime) => {
+    let t = Date.parse(endtime) - Date.parse(new Date());
+    let seconds = Math.floor((t / 1000) % 60);
+    let minutes = Math.floor((t / 1000 / 60) % 60);
+    return {
+      total: t,
+      minutes: minutes,
+      seconds: seconds
+    };
+  };
+
+  const prepForRestart = () => {
+    setIsPaused(true);
+    setIsPristine(false);
+    setFinished(false);
+  };
+
+  createEffect(() => {
+    switch (minutesInt()) {
+      case 5:
+        setMinutes("05");
+        setSeconds("00");
+        setTotal(300000);
+        break;
+      case 3:
+        setMinutes("03");
+        setSeconds("00");
+        setTotal(180000);
+        break;
+      case 1:
+        setMinutes("01");
+        setSeconds("00");
+        setTotal(60000);
+        break;
+    }
+  });
 
   return (
     <div class={styles.App}>
-      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"></link>
       <h1 class={`${styles.h1} ${styles.bold}`}>Pitch Please!</h1>
       <div class={styles.border}>
-        <h2 class={styles.h2}>{timePermitted()}</h2>
+        <h2 class={styles.h2}>{`${minutesInt()} ${minutesInt() !== 1 ? "minutes" : "minute"}`}</h2>
         <img src={logo} alt="logo" />
-        <p></p>
+        <p />
         <div id={styles.clock_container}>
           <div>
             <span class={styles.minutes}>{minutes()}</span>
@@ -148,20 +138,44 @@ function App() {
           </div>
         </div>
         <div>
-          <div class={styles.start_stop_container}>{button}</div>
+          <div class={styles.start_stop_container}>
+            <Show
+              when={isPaused() || finished()}
+              fallback={
+                <button
+                  class={`${styles.button} ${styles.start_stop}`}
+                  disabled={finished()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsPaused(true);
+                    pauseTimer();
+                  }}
+                >
+                  Pause
+                </button>
+              }
+            >
+              <button
+                class={`${styles.button} ${styles.start_stop} ${styles.bold}`}
+                disabled={finished()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsPaused(false);
+                  setIsPristine(false);
+                  startTimer();
+                }}
+              >
+                Start
+              </button>
+            </Show>
+          </div>
           <div class={`${styles.minutes_btn_container} ${styles.bold}`}>
             <button
               class={styles.button}
               onClick={(e) => {
                 e.preventDefault();
-                setIsPaused(true);
-                setMinutes("05");
-                setSeconds("00");
-                setTotal(300000);
                 setMinutesInt(5);
-                setTimePermitted("5 minutes");
-                setClickCount(0);
-                setFinished(false);
+                prepForRestart();
               }}
             >
               5 minutes
@@ -170,14 +184,8 @@ function App() {
               class={styles.button}
               onClick={(e) => {
                 e.preventDefault();
-                setIsPaused(true);
-                setMinutes("03");
-                setSeconds("00");
-                setTotal(180000);
                 setMinutesInt(3);
-                setTimePermitted("3 minutes");
-                setClickCount(0);
-                setFinished(false);
+                prepForRestart();
               }}
             >
               3 minutes
@@ -186,14 +194,8 @@ function App() {
               class={styles.button}
               onClick={(e) => {
                 e.preventDefault();
-                setIsPaused(true);
-                setMinutes("01");
-                setSeconds("00");
-                setTotal(60000);
                 setMinutesInt(1);
-                setTimePermitted("1 minute");
-                setClickCount(0);
-                setFinished(false);
+                prepForRestart();
               }}
             >
               1 minute

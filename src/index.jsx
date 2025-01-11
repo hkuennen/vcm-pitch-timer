@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 
+import App from "./App";
 import "./index.css";
-import Bpp from "./App";
 
 const root = document.getElementById("root");
 
@@ -11,4 +11,4 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-render(() => <Bpp />, root);
+render(() => <App />, root);

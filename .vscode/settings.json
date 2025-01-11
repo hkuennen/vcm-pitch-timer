@@ -1,3 +1,23 @@
 {
-  "djlint.showInstallError": false
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "boundary",
+  "files.autoSave": "off",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.fixAll.tslint": "always",
+    "source.organizeImports": "explicit"
+  },
+  "explorer.autoRevealExclude": {
+    "**/node modules": false
+  },
+  "prettier.requireConfig": true,
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "importSorter.importStringConfiguration.quoteMark": "double",
+  "importSorter.importStringConfiguration.hasSemicolon": true,
+  "task.autoDetect": "off"
 }
