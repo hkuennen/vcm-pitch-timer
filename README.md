@@ -13,4 +13,6 @@ The VCM Pitch Timer is an application designed to help startup enthusiasts and a
 
 To enhance the pitching experience, the app includes a ticking sound during the final 10 seconds of the timer and a gong sound when time runs out, providing clear cues to presenters to conclude their pitches effectively.
 
-[![VCM Pitch Timer](./assets/thumbnail.png)](https://www.pitch-timer.com)
+## Web App
+
+[![VCM Pitch Timer](src/assets/thumbnail.png)](https://www.pitch-timer.com)
