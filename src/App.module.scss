@@ -43,7 +43,6 @@ $desktop: 1200px;
   &:disabled {
     border-color: adjust-color($ochre, $lightness: -10%);
     background-color: adjust-color($ochre, $lightness: -10%);
-    color: adjust-color($ochre, $lightness: 10%);
     box-shadow: none;
     cursor: not-allowed;
   }

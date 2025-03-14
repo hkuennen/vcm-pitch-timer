@@ -17,13 +17,17 @@ export default [
     plugins: {
       solid: solidPlugin
     },
+    env: {
+      browser: true,
+      es6: true
+    },
     rules: {
       ...eslintRecommended.configs.recommended.rules,
       ...solidPlugin.configs.recommended.rules,
 
       // Relax rules for warnings
-      "no-unused-vars": "off",
-      "no-undef": "off",
+      "no-unused-vars": "warn",
+      "no-undef": "error",
       "solid/jsx-no-undef": "warn"
     }
   },

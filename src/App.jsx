@@ -6,7 +6,6 @@ import gongSound from "./assets/gong.mp3";
 import logo from "./assets/logo.svg";
 
 function App() {
-  const [deadline, setDeadline] = createSignal(new Date());
   const [isPaused, setIsPaused] = createSignal(true);
   const [minutes, setMinutes] = createSignal("05");
   const [seconds, setSeconds] = createSignal("00");
@@ -26,41 +25,22 @@ function App() {
   const startTimer = () => {
     if (isPristine()) {
       loadSounds();
-      setDeadline(addMinutes(minutesInt()));
     }
-    setTimeout(() => initializeClock(), 200);
-  };
-
-  const pauseTimer = () => {
-    setTimeout(() => {
-      const updateClock = () => {
-        if (isPaused()) {
-          setDeadline(new Date(Date.parse(deadline()) + 1000));
-        } else {
-          clearInterval(timeinterval);
-        }
-      };
-      updateClock();
-      let timeinterval = setInterval(updateClock, 1000);
-      onCleanup(() => clearInterval(timeinterval));
-    }, 10);
+    initializeClock();
   };
 
   const initializeClock = () => {
+    let timeinterval;
+
     const updateClock = () => {
       if (!isPaused()) {
-        let timeRemaining = getTimeRemaining(deadline());
+        const timeRemaining = getTimeRemaining();
 
         setMinutes(("0" + timeRemaining.minutes).slice(-2));
         setSeconds(("0" + timeRemaining.seconds).slice(-2));
         setTotal(timeRemaining.total);
 
-        if (total() < 12000) {
-          beep.play();
-          beep.currentTime = 0;
-        }
-
-        if (total() < 2000) {
+        if (timeRemaining.total === 0) {
           clearInterval(timeinterval);
           setMinutes("00");
           setSeconds("00");
@@ -74,22 +54,16 @@ function App() {
         beep.currentTime = 0;
       }
     };
-    updateClock();
-    let timeinterval = setInterval(updateClock, 1000);
+    timeinterval = setInterval(updateClock, 100);
     onCleanup(() => clearInterval(timeinterval));
   };
 
-  const addMinutes = (numOfMinutes, date = new Date()) => {
-    date.setMinutes(date.getMinutes() + numOfMinutes);
-    return date;
-  };
-
-  const getTimeRemaining = (endtime) => {
-    let total = Date.parse(endtime) - Date.parse(new Date());
-    let seconds = Math.floor((total / 1000) % 60);
-    let minutes = Math.floor((total / 1000 / 60) % 60);
+  const getTimeRemaining = () => {
+    const t = total() - 100;
+    const seconds = Math.floor((t / 1000) % 60);
+    const minutes = Math.floor((t / 1000 / 60) % 60);
     return {
-      total: total,
+      total: t,
       minutes: minutes,
       seconds: seconds
     };
@@ -100,6 +74,15 @@ function App() {
     setIsPristine(false);
     setFinished(false);
   };
+
+  createEffect(() => {
+    const thresholds = [10000, 9000, 8000, 7000, 6000, 5000, 4000, 3000, 2000, 1000, 0];
+
+    if (thresholds.includes(total())) {
+      beep.play();
+      beep.currentTime = 0;
+    }
+  });
 
   createEffect(() => {
     switch (minutesInt()) {
@@ -149,7 +132,6 @@ function App() {
                   onClick={(e) => {
                     e.preventDefault();
                     setIsPaused(true);
-                    pauseTimer();
                   }}
                 >
                   Pause
