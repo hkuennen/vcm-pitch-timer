@@ -1,3 +1,4 @@
+import pluralize from "pluralize";
 import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import styles from "./App.module.scss";
 import beepSound from "./assets/beep.mp3";
@@ -48,11 +49,11 @@ function App() {
   const initializeClock = () => {
     const updateClock = () => {
       if (!isPaused()) {
-        let t = getTimeRemaining(deadline());
+        let timeRemaining = getTimeRemaining(deadline());
 
-        setMinutes(("0" + t.minutes).slice(-2));
-        setSeconds(("0" + t.seconds).slice(-2));
-        setTotal(t.total);
+        setMinutes(("0" + timeRemaining.minutes).slice(-2));
+        setSeconds(("0" + timeRemaining.seconds).slice(-2));
+        setTotal(timeRemaining.total);
 
         if (total() < 12000) {
           beep.play();
@@ -84,11 +85,11 @@ function App() {
   };
 
   const getTimeRemaining = (endtime) => {
-    let t = Date.parse(endtime) - Date.parse(new Date());
-    let seconds = Math.floor((t / 1000) % 60);
-    let minutes = Math.floor((t / 1000 / 60) % 60);
+    let total = Date.parse(endtime) - Date.parse(new Date());
+    let seconds = Math.floor((total / 1000) % 60);
+    let minutes = Math.floor((total / 1000 / 60) % 60);
     return {
-      total: t,
+      total: total,
       minutes: minutes,
       seconds: seconds
     };
@@ -124,7 +125,7 @@ function App() {
     <div class={styles.App}>
       <h1 class={`${styles.h1} ${styles.bold}`}>Pitch Please!</h1>
       <div class={styles.border}>
-        <h2 class={styles.h2}>{`${minutesInt()} ${minutesInt() !== 1 ? "minutes" : "minute"}`}</h2>
+        <h2 class={styles.h2}>{pluralize("minute", minutesInt(), true)}</h2>
         <img src={logo} alt="logo" />
         <p />
         <div id={styles.clock_container}>
@@ -161,8 +162,8 @@ function App() {
                 onClick={(e) => {
                   e.preventDefault();
                   setIsPaused(false);
-                  setIsPristine(false);
                   startTimer();
+                  setIsPristine(false);
                 }}
               >
                 Start
