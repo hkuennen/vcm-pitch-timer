@@ -6,7 +6,7 @@
   "files.autoSave": "off",
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
-    "source.fixAll.tslint": "always",
+    "source.fixAll.eslint": "always",
     "source.organizeImports": "explicit"
   },
   "explorer.autoRevealExclude": {

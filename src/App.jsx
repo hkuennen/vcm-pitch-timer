@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import { createEffect, createSignal, onCleanup, Show } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
 import styles from "./App.module.scss";
 import beepSound from "./assets/beep.mp3";
 import gongSound from "./assets/gong.mp3";
@@ -11,23 +11,10 @@ function App() {
   const [seconds, setSeconds] = createSignal("00");
   const [total, setTotal] = createSignal(300000);
   const [minutesInt, setMinutesInt] = createSignal(5);
-  const [isPristine, setIsPristine] = createSignal(true);
   const [finished, setFinished] = createSignal(false);
 
   const beep = new Audio(beepSound);
   const gong = new Audio(gongSound);
-
-  const loadSounds = () => {
-    beep.load();
-    gong.load();
-  };
-
-  const startTimer = () => {
-    if (isPristine()) {
-      loadSounds();
-    }
-    initializeClock();
-  };
 
   const initializeClock = () => {
     let timeinterval;
@@ -40,7 +27,7 @@ function App() {
         setSeconds(("0" + timeRemaining.seconds).slice(-2));
         setTotal(timeRemaining.total);
 
-        if (timeRemaining.total === 0) {
+        if (timeRemaining.total === 1000) {
           clearInterval(timeinterval);
           setMinutes("00");
           setSeconds("00");
@@ -71,20 +58,7 @@ function App() {
 
   const prepForRestart = () => {
     setIsPaused(true);
-    setIsPristine(false);
     setFinished(false);
-  };
-
-  createEffect(() => {
-    const thresholds = [10000, 9000, 8000, 7000, 6000, 5000, 4000, 3000, 2000, 1000, 0];
-
-    if (thresholds.includes(total())) {
-      beep.play();
-      beep.currentTime = 0;
-    }
-  });
-
-  createEffect(() => {
     switch (minutesInt()) {
       case 5:
         setMinutes("05");
@@ -102,6 +76,20 @@ function App() {
         setTotal(60000);
         break;
     }
+  };
+
+  createEffect(() => {
+    const thresholds = [10000, 9000, 8000, 7000, 6000, 5000, 4000, 3000, 2000, 1000];
+
+    if (thresholds.includes(total())) {
+      beep.play();
+      beep.currentTime = 0;
+    }
+  });
+
+  onMount(() => {
+    beep.load();
+    gong.load();
   });
 
   return (
@@ -144,8 +132,7 @@ function App() {
                 onClick={(e) => {
                   e.preventDefault();
                   setIsPaused(false);
-                  startTimer();
-                  setIsPristine(false);
+                  initializeClock();
                 }}
               >
                 Start
