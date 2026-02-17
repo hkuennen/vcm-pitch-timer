@@ -43,80 +43,78 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
 
   &.dark {
     background: $dark-bg;
-  }
 
-  &.dark .card {
-    background: $dark-card;
-  }
-
-  &.dark .topbar {
-    .text {
-      color: $dark-text-primary;
+    .branding {
+      &__text {
+        color: $dark-text-primary;
+      }
     }
+
     .settings {
-      .volume {
+      &__volume {
         background: $dark-surface;
       }
-      .dark_mode {
+
+      &__dark_mode {
         background: $dark-surface;
       }
     }
-  }
 
-  &.dark .title {
-    color: $dark-text-primary;
-  }
+    .card {
+      background: $dark-card;
 
-  &.dark .caption {
-    color: $dark-text-secondary;
-  }
+      &__title {
+        color: $dark-text-primary;
+      }
 
-  &.dark .timer_wrapper {
-    .timer {
-      color: $dark-text-primary;
+      &__caption {
+        color: $dark-text-secondary;
+      }
+
+      .timer {
+        &__svg {
+          filter: drop-shadow(0 0 20px rgba(245, 130, 32, 0.6));
+        }
+
+        &__circle--bg {
+          fill: $dark-ring-bg;
+        }
+
+        &__countdown {
+          color: $dark-text-primary;
+        }
+      }
+
+      .start__button {
+        box-shadow: $dark-shadow-button;
+
+        &--primary {
+          background: linear-gradient(135deg, $primary, #ff9a3d);
+        }
+      }
     }
-    .progress_ring {
-      filter: drop-shadow(0 0 20px rgba(245, 130, 32, 0.6));
+
+    .reset__button {
+      box-shadow: $dark-shadow-button;
+
+      &--selected {
+        background: linear-gradient(135deg, $primary, #ff9a3d);
+      }
+
+      &--secondary {
+        background: $dark-surface;
+        color: $dark-text-primary;
+
+        &:hover {
+          border-color: $primary;
+          color: $primary;
+        }
+      }
     }
-    .progress_background {
-      fill: $dark-ring-bg;
-    }
-  }
-
-  &.dark .primary_btn_wrapper .primary_btn,
-  &.dark .interval_btn_container .selected_btn {
-    background: linear-gradient(135deg, $primary, #ff9a3d);
-  }
-
-  &.dark .interval_btn_container .secondary_btn {
-    background: $dark-surface;
-    color: $dark-text-primary;
-
-    &:hover {
-      border-color: $primary;
-      color: $primary;
-    }
-  }
-
-  &.dark .btn {
-    box-shadow: $dark-shadow-button;
   }
 }
 
-.card {
-  display: inline-block;
-  background: $bg-card;
-  opacity: 0.85;
-  padding: 0 0 60px;
-  text-align: center;
-  border-radius: 32px;
-  max-width: 900px;
-  width: 90%;
-  box-sizing: border-box;
-  box-shadow: $shadow-soft;
-}
-
-.topbar {
+.header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -129,11 +127,11 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
     align-items: center;
     gap: 8px;
 
-    .logo {
+    &__logo {
       width: 35px;
     }
 
-    .text {
+    &__text {
       font-size: 22px;
       font-weight: 600;
       color: $text-primary;
@@ -149,7 +147,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
     align-items: center;
     gap: 16px;
 
-    .volume {
+    &__volume {
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -159,7 +157,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
       border-radius: 20px;
     }
 
-    .dark_mode {
+    &__dark_mode {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -171,20 +169,33 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   }
 }
 
-.title {
-  font-size: 44px;
-  font-weight: 600;
-  color: $text-primary;
-  margin: 30px 0 8px;
+.card {
+  display: inline-block;
+  background: $bg-card;
+  opacity: 0.85;
+  padding: 0 0 60px;
+  text-align: center;
+  border-radius: 32px;
+  max-width: 900px;
+  width: 90%;
+  box-sizing: border-box;
+  box-shadow: $shadow-soft;
+
+  &__title {
+    font-size: 44px;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 30px 0 8px;
+  }
+
+  &__caption {
+    font-size: 22px;
+    color: $text-secondary;
+    margin: 0;
+  }
 }
 
-.caption {
-  font-size: 22px;
-  color: $text-secondary;
-  margin: 0;
-}
-
-.timer_wrapper {
+.timer {
   position: relative;
   width: 400px;
   height: 400px;
@@ -194,19 +205,46 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
     animation: ringPulse 3s ease-in-out infinite;
   }
 
-  .logo_wrapper {
+  &__svg {
+    fill: none;
+    stroke: $primary;
+    transform: rotateX(25deg);
+    filter: drop-shadow(0 0 14px rgba(245, 130, 32, 0.6));
+  }
+
+  &__circle {
+    &--bg {
+      fill: #f7f0ed;
+      stroke: #f3f4f6;
+    }
+
+    &--static {
+      stroke: #e9dcd3;
+      stroke-width: 2px;
+    }
+
+    &--progress {
+      stroke: $primary;
+      stroke-width: 6px;
+      stroke-linecap: round;
+      transform: rotate(125deg);
+      transform-origin: center;
+    }
+  }
+
+  .logo {
     position: absolute;
     top: 2%;
     left: 50%;
     transform: translate(-50%, -2%);
+
+    &__img {
+      width: 50px;
+      animation: float 3s ease-in-out infinite;
+    }
   }
 
-  .logo {
-    width: 50px;
-    animation: float 3s ease-in-out infinite;
-  }
-
-  .timer {
+  &__countdown {
     position: absolute;
     top: 34%;
     left: 50%;
@@ -216,95 +254,87 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
     transform: translate(-50%, -34%) rotateX(25deg);
   }
 
-  .label {
+  &__caption {
+    font-size: 22px;
+    color: $text-secondary;
+    margin: 0;
+  }
+
+  &__label {
     position: absolute;
     top: 54%;
     left: 50%;
     transform: translate(-50%, -54%) rotateX(25deg);
   }
-
-  .progress_ring {
-    fill: none;
-    stroke: $primary;
-    transform: rotateX(25deg);
-    filter: drop-shadow(0 0 14px rgba(245, 130, 32, 0.6));
-  }
-
-  .progress_background {
-    fill: #f7f0ed;
-    stroke: #f3f4f6;
-  }
-
-  .progress_circle1 {
-    stroke: #e9dcd3;
-    stroke-width: 2px;
-  }
-
-  .progress_circle2 {
-    stroke: $primary;
-    stroke-width: 6px;
-    stroke-linecap: round;
-    transform: rotate(125deg);
-    transform-origin: center;
-  }
 }
 
-.btn {
-  border: none;
-  border-radius: 999px;
-  padding: 10px 22px;
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  box-shadow: $shadow-button;
-}
-
-.primary_btn_wrapper {
+.start {
   position: absolute;
   top: 72%;
   left: 50%;
   transform: translate(-50%, -72%) rotateX(25deg);
 
-  .primary_btn {
-    width: 200px;
-    background: linear-gradient(135deg, $primary, $primary-dark);
-    color: #fdf8f3;
+  &__button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 22px;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: $shadow-button;
 
-    &:hover {
-      transform: translateY(-2px);
-    }
+    &--primary {
+      width: 200px;
+      background: linear-gradient(135deg, $primary, $primary-dark);
+      color: #fdf8f3;
 
-    &:active {
-      transform: scale(0.97);
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: scale(0.97);
+      }
     }
   }
 }
 
-.interval_btn_container {
+.reset {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
   padding: 12px;
 
-  .selected_btn {
-    flex: 1 1 auto;
-    max-width: 135px;
-    background: linear-gradient(135deg, $primary, $primary-dark);
-    color: #fdf8f3;
-  }
+  &__button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 22px;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: $shadow-button;
 
-  .secondary_btn {
-    flex: 1 1 auto;
-    max-width: 135px;
-    background: white;
-    border: 1px solid #e5e7eb;
-    color: $text-primary;
+    &--selected {
+      flex: 1 1 auto;
+      max-width: 135px;
+      background: linear-gradient(135deg, $primary, $primary-dark);
+      color: #fdf8f3;
+    }
 
-    &:hover {
-      border-color: $primary;
-      color: $primary;
+    &--secondary {
+      flex: 1 1 auto;
+      max-width: 135px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      color: $text-primary;
+
+      &:hover {
+        border-color: $primary;
+        color: $primary;
+      }
     }
   }
 }
