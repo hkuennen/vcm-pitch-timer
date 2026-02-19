@@ -1,7 +1,7 @@
 import { DarkMode, LightMode, VolumeOff, VolumeUp } from "@suid/icons-material";
 import { createEffect, createSignal, For, Match, onCleanup, onMount, Show, Switch } from "solid-js";
 import { createStore } from "solid-js/store";
-import styles from "./App.module.scss";
+import "./App.scss";
 import beepSound from "./assets/beep.mp3";
 import gongSound from "./assets/gong.mp3";
 import logo from "./assets/logo.svg";
@@ -112,17 +112,17 @@ function App() {
   });
 
   return (
-    <div class={`${styles.app} ${isDarkMode() ? styles.dark : ""}`}>
-      <div class={styles.card}>
-        <div class={styles.header}>
-          <div class={styles.branding}>
-            <img class={styles.branding__logo} src={logo} alt="logo" />
-            <p class={styles.branding__text}>
+    <div class={`app ${isDarkMode() ? "dark" : ""}`}>
+      <div class="card">
+        <div class="header">
+          <div class="branding">
+            <img class="branding__logo" src={logo} alt="logo" />
+            <p class="branding__text">
               Pitch <span>Please</span>
             </p>
           </div>
-          <div class={styles.settings}>
-            <div class={styles.settings__volume}>
+          <div class="settings">
+            <div class="settings__volume">
               <Show
                 when={!isMuted()}
                 fallback={<VolumeOff sx={{ color: isDarkMode() ? "#f9fafb" : "#343740" }} />}
@@ -131,21 +131,21 @@ function App() {
               </Show>
               <SwitchButton size="small" onChange={(e) => handleSwitch(e)} checked={!isMuted()} />
             </div>
-            <div class={styles.settings__dark_mode} onClick={handleToggle}>
+            <div class="settings__dark_mode" onClick={handleToggle}>
               <Show when={isDarkMode()} fallback={<DarkMode sx={{ color: "#343740" }} />}>
                 <LightMode sx={{ color: "#f9fafb" }} />
               </Show>
             </div>
           </div>
         </div>
-        <h1 class={styles.card__title}>Pitch Please!</h1>
-        <p class={styles.card__caption}>Run your next pitch like a pro.</p>
-        <div class={`${styles.timer} ${!isPaused() ? styles.running : ""}`}>
-          <svg class={styles.timer__svg} width="400" height="400">
-            <circle class={styles["timer__circle--bg"]} r="185" cx="200" cy="200" />
-            <circle class={styles["timer__circle--static"]} r={radius} cx="200" cy="200" />
+        <h1 class="card__title">Pitch Please!</h1>
+        <p class="card__caption">Run your next pitch like a pro.</p>
+        <div class={`timer ${!isPaused() ? "running" : ""}`}>
+          <svg class="timer__svg" width="400" height="400">
+            <circle class="timer__circle--bg" r="185" cx="200" cy="200" />
+            <circle class="timer__circle--static" r={radius} cx="200" cy="200" />
             <circle
-              class={styles["timer__circle--progress"]}
+              class="timer__circle--progress"
               display={isFinished() && "none"}
               stroke-dasharray={[timerArc(), circumference]}
               stroke-dashoffset={0}
@@ -154,21 +154,21 @@ function App() {
               cy="200"
             />
           </svg>
-          <div class={styles.logo}>
-            <img class={styles.logo__img} src={logo} alt="logo" />
+          <div class="logo">
+            <img class="logo__img" src={logo} alt="logo" />
           </div>
-          <div class={styles.timer__countdown}>
+          <div class="timer__countdown">
             {minutes()}:{seconds()}
           </div>
-          <div class={`${styles.timer__caption} ${styles.timer__label}`}>
+          <div class="timer__caption timer__label">
             {minutesInt()} min pitch
           </div>
 
-          <div class={styles.start}>
+          <div class="start">
             <Switch
               fallback={
                 <button
-                  class={`${styles.start__button} ${styles["start__button--primary"]}`}
+                  class="start__button start__button--primary"
                   onClick={(e) => {
                     e.preventDefault();
                     setIsPaused(false);
@@ -181,7 +181,7 @@ function App() {
             >
               <Match when={!isPaused() && isFinished()}>
                 <button
-                  class={`${styles.start__button} ${styles["start__button--primary"]}`}
+                  class="start__button start__button--primary"
                   onClick={(e) => {
                     e.preventDefault();
                     const timer = timers.find((timer) => timer.minutesInt === minutesInt());
@@ -193,7 +193,7 @@ function App() {
               </Match>
               <Match when={!isPaused() && !isFinished()}>
                 <button
-                  class={`${styles.start__button} ${styles["start__button--primary"]}`}
+                  class="start__button start__button--primary"
                   onClick={(e) => {
                     e.preventDefault();
                     setIsPaused(true);
@@ -205,11 +205,11 @@ function App() {
             </Switch>
           </div>
         </div>
-        <div class={`${styles.reset}`}>
+        <div class="reset">
           <For each={timers}>
             {(timer, idx) => (
               <button
-                class={`${styles.reset__button} ${timer.isSelected ? styles["reset__button--selected"] : styles["reset__button--secondary"]}`}
+                class={`reset__button ${timer.isSelected ? "reset__button--selected" : "reset__button--secondary"}`}
                 onClick={(e) => {
                   e.preventDefault();
                   setTimers([0, 1, 2], { isSelected: false });
