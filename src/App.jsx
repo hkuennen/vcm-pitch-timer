@@ -141,7 +141,7 @@ function App() {
         <h1 class="card__title">Pitch Please!</h1>
         <p class="card__caption">Run your next pitch like a pro.</p>
         <div class={`timer ${!isPaused() ? "running" : ""}`}>
-          <svg class="timer__svg" width="400" height="400">
+          <svg class="timer__svg" viewBox="0 0 400 400">
             <circle class="timer__circle--bg" r="185" cx="200" cy="200" />
             <circle class="timer__circle--static" r={radius} cx="200" cy="200" />
             <circle
