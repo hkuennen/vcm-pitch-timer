@@ -55,7 +55,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
         background: $dark-surface;
       }
 
-      &__dark_mode {
+      &__button {
         background: $dark-surface;
       }
     }
@@ -157,14 +157,19 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
       border-radius: 20px;
     }
 
-    &__dark_mode {
+    &__button {
       display: flex;
       justify-content: center;
       align-items: center;
       background: #f3eeec;
       padding: 4px 10px;
       border-radius: 20px;
-      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
@@ -182,21 +187,22 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   box-shadow: $shadow-soft;
 
   &__title {
-    font-size: 44px;
+    font-size: clamp(28px, 5.5vw, 44px);
     font-weight: 600;
     color: $text-primary;
     margin: 30px 0 8px;
   }
 
   &__caption {
-    font-size: 22px;
+    font-size: clamp(16px, 2.75vw, 22px);
     color: $text-secondary;
     margin: 0;
   }
 }
 
 .timer {
-  position: relative;
+  display: grid;
+  grid-template-rows: repeat(20, minmax(0, 1fr));
   width: min(400px, 100%);
   aspect-ratio: 1;
   margin: 20px auto 0;
@@ -206,6 +212,9 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   }
 
   &__svg {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+    z-index: -1;
     fill: none;
     stroke: $primary;
     transform: rotateX(25deg);
@@ -233,55 +242,56 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   }
 
   .logo {
-    position: absolute;
-    top: 2%;
-    left: 50%;
-    transform: translate(-50%, -2%);
+    grid-row: 1 / 5;
+    grid-column: 1 / 1;
+    z-index: 1;
+    margin-top: 6px;
 
     &__img {
       width: 50px;
+      height: 50px;
+      object-fit: contain;
       animation: float 3s ease-in-out infinite;
     }
   }
 
   &__countdown {
-    position: absolute;
-    top: 34%;
-    left: 50%;
+    z-index: 1;
+    grid-row: 6 / 12;
+    grid-column: 1 / 1;
+    margin-top: 8px;
     font-size: clamp(36px, 14vw, 66px);
     font-weight: 800;
     color: $text-primary;
-    transform: translate(-50%, -34%) rotateX(25deg);
+    transform: rotateX(25deg);
   }
 
   &__caption {
+    z-index: 1;
+    grid-row: 11 / 12;
+    grid-column: 1 / 1;
     font-size: clamp(14px, 5vw, 22px);
     color: $text-secondary;
-    margin: 0;
-  }
-
-  &__label {
-    position: absolute;
-    top: 54%;
-    left: 50%;
-    transform: translate(-50%, -54%) rotateX(25deg);
+    margin: 2px 0 0;
+    transform: rotateX(25deg);
   }
 }
 
 .start {
-  position: absolute;
-  top: 72%;
-  left: 50%;
-  transform: translate(-50%, -72%) rotateX(25deg);
+  z-index: 1;
+  grid-row: 13 / 16;
+  grid-column: 1 / 1;
+  margin-top: 15px;
+  transform: rotateX(25deg);
 
   &__button {
     border: none;
     border-radius: 999px;
-    padding: 10px 22px;
+    padding: clamp(5px, 2.5%, 10px) 22px;
     font-size: 22px;
     font-weight: 500;
     letter-spacing: 0.5px;
-    width: 200px;
+    width: min(200px, 50%);
     cursor: pointer;
     box-shadow: $shadow-button;
 
@@ -310,7 +320,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   &__button {
     border: none;
     border-radius: 999px;
-    padding: 10px 22px;
+    padding: clamp(5px, 2.5%, 10px) 22px;
     font-size: 22px;
     font-weight: 500;
     letter-spacing: 0.5px;
@@ -362,19 +372,22 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   }
 }
 
-@media screen and (max-width: 338px) {
-  .header .settings__volume {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 390px) {
+  .card {
+    padding: 0;
+  }
+
   .reset {
     flex-direction: column;
 
     &__button {
       max-width: 100%;
-      padding: 5px 22px;
     }
+  }
+}
+
+@media screen and (max-width: 438px) {
+  .header .settings__volume {
+    display: none;
   }
 }
