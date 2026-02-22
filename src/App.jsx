@@ -18,6 +18,8 @@ function App() {
   const [total, setTotal] = createSignal(300000);
   const [minutesInt, setMinutesInt] = createSignal(5);
   const [isFinished, setIsFinished] = createSignal(false);
+  const [isReset, setIsReset] = createSignal(false);
+  const [resetVariant, setResetVariant] = createSignal(1);
   const [isMuted, setIsMuted] = createSignal(false);
   const [isDarkMode, setIsDarkMode] = createSignal(false);
   const [timerArc, setTimerArc] = createSignal(visibleArc);
@@ -156,7 +158,9 @@ function App() {
         </div>
         <h1 class="card__title">Pitch Please!</h1>
         <p class="card__caption">Run your next pitch like a pro.</p>
-        <div class={`timer ${!isPaused() ? "running" : ""}`}>
+        <div
+          class={`timer ${!isPaused() ? "running" : ""} ${isReset() ? `resetting_variant_${resetVariant()}` : ""}`}
+        >
           <svg class="timer__svg" viewBox="0 0 400 400">
             <circle class="timer__circle--bg" r="185" cx="200" cy="200" />
             <circle class="timer__circle--static" r={radius} cx="200" cy="200" />
@@ -199,7 +203,14 @@ function App() {
                   onClick={(e) => {
                     e.preventDefault();
                     const timer = timers.find((timer) => timer.minutesInt === minutesInt());
-                    prepForRestart(timer);
+                    setResetVariant(Math.floor(Math.random() * 2) + 1);
+                    setIsReset(true);
+                    setTimeout(() => {
+                      prepForRestart(timer);
+                    }, 2000);
+                    setTimeout(() => {
+                      setIsReset(false);
+                    }, 3000);
                   }}
                 >
                   Reset
