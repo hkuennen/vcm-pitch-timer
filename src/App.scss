@@ -33,6 +33,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
 .app {
   min-height: 100vh;
   background: $bg-main;
+  overflow: clip;
 
   display: flex;
   flex-direction: column;
@@ -210,6 +211,17 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   &.running {
     animation: ringPulse 3s ease-in-out infinite;
   }
+  &.resetting_variant_1 {
+    animation: spin 3s ease-in-out infinite;
+  }
+  &.resetting_variant_2 {
+    animation: leaveScreen 3s ease-in-out infinite;
+    &__svg,
+    &__countdown,
+    &__caption {
+      transform: rotateX(0);
+    }
+  }
 
   &__svg {
     grid-row: 1 / 1;
@@ -262,6 +274,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
     margin-top: 8px;
     font-size: clamp(36px, 14vw, 66px);
     font-weight: 800;
+    font-variant-numeric: tabular-nums;
     color: $text-primary;
     transform: rotateX(25deg);
   }
@@ -369,6 +382,44 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   }
   100% {
     filter: drop-shadow(0 0 6px rgba(245, 130, 32, 0.4));
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: scale(1) rotateX(0);
+  }
+  33% {
+    transform: scale(0.4) rotateX(0);
+  }
+  66% {
+    transform: scale(0.4) rotateX(20turn);
+  }
+  100% {
+    transform: scale(1) rotateX(20turn);
+  }
+}
+
+@keyframes leaveScreen {
+  0% {
+    transform: translateX(0) rotate(0) scale(1);
+  }
+  20% {
+    transform: translateX(0) rotate(0) scale(0.4);
+  }
+  48% {
+    transform: translateX(-1200px) rotate(-2.5turn) scale(0.4);
+    visibility: hidden;
+  }
+  52% {
+    transform: translateX(1200px) rotate(-2.5turn) scale(0.4);
+    visibility: hidden;
+  }
+  80% {
+    transform: translateX(0) rotate(-5turn) scale(0.4);
+  }
+  100% {
+    transform: translateX(0) rotate(-5turn) scale(1);
   }
 }
 
