@@ -182,8 +182,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   padding: 0 0 60px;
   text-align: center;
   border-radius: 32px;
-  max-width: 900px;
-  width: 90%;
+  width: min(900px, 90%);
   box-sizing: border-box;
   box-shadow: $shadow-soft;
 
@@ -215,7 +214,7 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
     animation: spin 3s ease-in-out infinite;
   }
   &.resetting_variant_2 {
-    animation: leaveScreen 3s ease-in-out infinite;
+    animation: bolt 3s ease-in-out infinite;
     &__svg,
     &__countdown,
     &__caption {
@@ -400,19 +399,19 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
   }
 }
 
-@keyframes leaveScreen {
+@keyframes bolt {
   0% {
     transform: translateX(0) rotate(0) scale(1);
   }
   20% {
     transform: translateX(0) rotate(0) scale(0.4);
   }
-  48% {
-    transform: translateX(-1200px) rotate(-2.5turn) scale(0.4);
+  49% {
+    transform: translateX(-150vw) rotate(-2.5turn) scale(0.4);
     visibility: hidden;
   }
-  52% {
-    transform: translateX(1200px) rotate(-2.5turn) scale(0.4);
+  51% {
+    transform: translateX(150vw) rotate(-2.5turn) scale(0.4);
     visibility: hidden;
   }
   80% {
@@ -440,5 +439,11 @@ $dark-shadow-button: 0 20px 40px rgba(245, 130, 32, 0.2);
 @media screen and (max-width: 438px) {
   .header .settings__volume {
     display: none;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .card {
+    transform: scale(1.1);
   }
 }
